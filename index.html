@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <title>Document</title>
+
+</head>
+<style>
+#canvas{
+  border:1px solid #000;
+  position: absolute;
+  left:0;
+  right:0;
+  margin: 0 auto;
+  /*background:radial-gradient(#eee,#aaa);*/
+}
+
+</style>
+<body>
+  <!-- 画布大小只能通过 属性设置  不要用css -->
+  <canvas id="canvas" width="600" height="600"></canvas>
+
+  <script>
+   var canvas=document.querySelector('#canvas');
+  ///////////////////////////////////////线
+   var canvas=document.querySelector('#canvas');
+   var ctx=canvas.getContext('2d');
+  //  ctx.beginPath();
+  //  ctx.moveTo(0,0);
+  //  ctx.lineTo(600,600);
+  //  ctx.moveTo(600,0);
+  //  ctx.lineTo(0,600);
+  //  ctx.stroke();
+  //  ctx.closePath();
+
+  ///////////////////////////////////矩形
+
+  // ctx.fillRect(150,75,300,80);
+  // ctx.strokeRect(150,450,300,80);
+
+  /////////////////////圆
+  // ctx.arc(150,300,50,0,(Math.PI/180)*360);
+  // ctx.fill();
+  // ctx.beginPath()
+  // ctx.arc(450,300,50,90,(Math.PI/180)*180);
+  // ctx.stroke();
+
+////////////////////////////////
+ // ctx.beginPath();
+ // ctx.arc(300,450,50,0,(Math.PI/180)*360);
+ // ctx.stroke();
+ // ctx.moveTo(300,420);
+ // ctx.lineTo(300,350);
+ // ctx.stroke();
+
+// ctx.moveTo(300,250);
+// ctx.lineTo(300,20);
+
+//////////////////////////////////
+
+  //  function draw() {
+  //        var canvas = document.getElementById("canvas");
+  //        if (canvas.getContext) {
+  //          var ctx = canvas.getContext("2d");
+   //
+  //          ctx.fillStyle = "rgb(200,0,0)";
+  //          ctx.fillRect (10, 10, 55, 50);
+   //
+  //          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+  //          ctx.fillRect (30, 30, 55, 50);
+  //        }
+  //      }
+/////////////////////////////////////////
+
+  // ctx.save();
+  // ctx.translate(300,300);
+  // ctx.beginPath(10,10);
+  // ctx.moveTo(10,10);
+  // ctx.lineTo(10,300);
+  // ctx.stroke();
+  // ctx.closePath();
+
+  ///////////////////////////////////////
+// ctx.save();
+//
+// ctx.translate(300,300);
+// ctx.moveTo(0,0);
+// ctx.lineTo(0,-100);
+// ctx.stroke();
+
+// ctx.beginPath();
+// for( var i=0; i<12; i++){
+//     ctx.rotate((Math.PI/180)*30);
+//     ctx.moveTo(0,0);
+//     ctx.lineTo(0,-100);
+//     ctx.stroke();
+// }
+//
+// // ctx.rotate((Math.PI/180)*30);
+// // ctx.moveTo(0,0);
+// // ctx.lineTo(0,-100);
+// // ctx.stroke();
+//
+// ctx.restore();
+////////////////////////////////////////////////
+var r = function(deg){
+			return Math.PI/180*deg
+		}
+		var drawClock = function(){
+			ctx.clearRect(0,0,600,600);
+			ctx.save();
+			ctx.translate(300,300);
+			var now = new Date();
+
+
+			//画一个圆
+			ctx.save();
+			ctx.beginPath();
+			ctx.arc(0,0,200,0,r(360));
+      var crg= ctx.createRadialGradient(0,0,50,0,0,200)
+      crg.addColorStop(0, '#E4F4EE');
+      crg.addColorStop(0.3,'#e4f4ee')
+      // crg.addColorStop(0.7, '#9a87c6');
+      // crg.addColorStop(1, 'rgba(1,159,98,0)');
+      crg.addColorStop(1,'#C7C7C7')
+      // ctx.fillStyle = 'rgba(100,21,220,0.5)';
+      ctx.fillStyle=crg;
+      ctx.fill();
+      // ctx.closePath();
+      // ctx.beginPath();
+      ctx.arc(0,0,220,0,r(360));
+      ctx.fillStyle="222";
+      ctx.fill();
+      ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+			// 画刻度
+			ctx.save();
+			ctx.beginPath();
+			for(var i=0;i<60;i++){
+				ctx.moveTo(0,-200.5);
+				ctx.lineTo(0,-190.5);
+				if(i%5===0){
+					// ctx.lineTo(0,-165.5);
+          ctx.fillStyle="#333";
+          ctx.fillRect(0,-200.5,10,30);
+				}
+				ctx.rotate(r(6));
+			}
+			ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+			// 画小圆
+			ctx.save();
+			ctx.beginPath();
+			ctx.arc(0,0,5,0,r(360));
+      ctx.fillStyle="#fff";
+			ctx.fill();
+			ctx.closePath();
+			ctx.restore();
+			// 画秒针
+			var second = now.getSeconds();
+			ctx.save();
+			ctx.rotate(r(6*second));
+			ctx.beginPath();
+			// ctx.moveTo(0,-5);
+			// ctx.lineTo(5,-145);
+      ctx.fillRect(-2.5,-5,3,-10);
+			// ctx.moveTo(0,5);
+			// ctx.lineTo(0,20);
+			ctx.fillRect(-2.5,5,3,120);///////////////
+			ctx.closePath();
+			ctx.restore();
+			// 画分针
+			var minute = now.getMinutes();
+			ctx.save();
+			ctx.beginPath();
+			ctx.rotate(r(360*(minute*60+second)/(60*60)));
+			// ctx.moveTo(0,-5);
+			// ctx.lineTo(0,-100);
+      ctx.fillRect(-2.5,-5,4,-10);
+			// ctx.moveTo(0,5);
+			// ctx.lineTo(0,15)
+      ctx.fillRect(-2.5,5,4,80);
+			// ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+			// 画时针
+			var hour = now.getHours();
+			ctx.save();
+			ctx.beginPath();
+			ctx.rotate(r(360*(hour*3600+minute*60+second)/(12*60*60)));
+			// ctx.moveTo(0,-5);
+			// ctx.lineTo(0,-70);
+      ctx.fillRect(-2.5,5,5,10);
+			// ctx.moveTo(0,5);
+			// ctx.lineTo(0,15);
+      ctx.fillRect(-2.5,-45,5,40);
+			// ctx.stroke();
+			ctx.closePath();
+			ctx.restore();
+
+			ctx.closePath();
+			ctx.restore();
+
+      ctx.font="36px serif"
+      ctx.fillText('12',285,170);
+      ctx.fillText('3',445,318);
+      ctx.fillText('6',285,460);
+      ctx.fillText('9',145,310);
+      ctx.font="14px seif";
+      ctx.strokeText('Hello World',265,340);
+      color="pink";
+		}
+		drawClock();
+		setInterval(drawClock,1000);
+
+
+
+
+  </script>
+</body>
+</html>
